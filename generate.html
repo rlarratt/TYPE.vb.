@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TYPE vb.</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.dom.min.js"></script>
+  <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+
+  <style>
+    body { margin: 0; overflow: hidden; 
+    }
+    canvas { display: block; 
+    }
+    #output {
+      
+    }
+  </style>
+</head>
+<body>
+  <!-- <p id="output">Recognized text will appear here...</p> -->
+  <script>
+    
+    let img;
+    let size;
+    let s;
+    let SchiFont;
+    let thrash=100;
+    let tSize = 24;
+    let countess = 1;
+    let down = 0;
+    // let asciiChar = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,^`'. ";
+
+
+    (async () => {
+      
+      const worker = await Tesseract.createWorker('eng');
+      const { data: {text}} = await worker.recognize('./DELETE_THIS.png');
+      
+      s = text;
+      await worker.terminate();
+      console.log(s, s.length);
+
+      generate();
+      
+      await worker.terminate();
+      
+    })();
+  
+    function preload(){
+  SchiFont = loadFont('./CourierPrime-Regular.ttf');
+    img = loadImage("./DELETE_THIS.png")
+    }
+
+    function setup() {
+      createCanvas(1470, 1080);
+      textFont(SchiFont);
+      textSize(tSize);
+      img.resize(80,43);
+      // img.width(windowWidth);
+    size = width / img.width
+      frameRate(1);
+      // capture.hide(); 
+    //   img.resize(200,0);
+    // size = width / img.width
+      
+    }
+    
+  
+   
+function extractEnglishWords(text) {
+  // Match only sequences of English letters
+  return text.match(/\b[a-zA-Z]+\b/g) || [];
+}
+    
+function generate() {
+  noLoop();
+    const Words = extractEnglishWords(s);
+    console.log(Words); 
+
+      const l = Words.join(' ');
+    
+      console.log(l);
+
+      // text(s, 600, 600);
+      img.loadPixels(); 
+  print(img.pixels.length);
+  
+  
+  background(255);
+  for (let i=0; i<img.width; i ++) {
+    for (let j=0; j<img.height; j++) {
+      let pixelIndex = (i + j*img.width) * 4;
+      let r = img.pixels[pixelIndex +0];
+      let g = img.pixels[pixelIndex + 1];
+      let b = img.pixels[pixelIndex + 2];
+      //let a = img.pixels[pixelIndex + 3];
+      // console.log(img.width*img.height);
+          //  var s = textField.value();
+      let bright = brightness(color(r,g,b));
+      // let bright = (r + g + b)/3 ;
+//average of rgb (0.1 + s.length/52)
+      let tIndex = floor(map(bright, 0, 100, 0, l.length));
+      // let location = i*j;
+      // let tIndex = floor(map(location, 0 , 121600, 0, s.length));
+      const randomIndex = Math.floor(Math.random() * l.length);
+    let p = l.charAt(randomIndex);
+
+      
+
+      let t = l.charAt(randomIndex);
+      let tu = l.charAt(randomIndex + 1);
+      let tuv = l.charAt(randomIndex + 2);
+      let tuvw = l.charAt(randomIndex + 3);
+      let tuvwx = l.charAt(randomIndex + 4);
+      let tuvwxy = l.charAt(randomIndex + 5);
+      let tuvwxyz = l.charAt(randomIndex + 6);
+      
+      // var Arr = [t, [t, tu], [t, tu, tuv], [t, tu, tuv, tuvw],[t, tu, tuv, tuvw, tuvwx],[t, tu, tuv, tuvw, tuvwx, tuvwxy]];
+      
+
+      var arr1 = [t, tu];
+      arr11 = arr1.join('');
+      var arr2 = [t, tu, tuv];
+      arr21 = arr2.join('');
+      var arr3 = [t, tu, tuv, tuvw];
+      arr31 = arr3.join('');
+      var arr4 = [t, tu, tuv, tuvw, tuvwx];
+      arr41 = arr4.join('');
+      var arr5 = [t, tu, tuv, tuvw, tuvwx, tuvwxy];
+      arr51 = arr5.join('');
+      var arr6 = [t, tu, tuv, tuvw, tuvwx, tuvwxy, tuvwxyz];
+      arr61 = arr6.join('');
+
+      var Arr = [t, arr11, arr21, arr31, arr41, arr51, arr61]
+
+      let x = i*size + size*2;
+      let y = j*size + size*2;  
+      
+      // textSize(size);
+      
+      textAlign(CENTER, CENTER);
+      // if bright is above 30 then text
+      // if (bright <=33) {
+        
+       
+      //   text(t, x, y); } 
+      if (countess<=20) {
+        if (bright<=30 & bright>10) {
+
+          // textSize(random(8,30));
+          text(random(Arr), x + random(0,6), y  );
+         
+        //   text(t, x, y);
+        // text(tu, x+6, y);
+        // text(tuv, x+12, y);
+        }}
+
+      if (countess>15){
+        if (bright<=30 & bright>10) {
+        text(random(Arr), x + random(0,6), y - down);
+
+        }
+      }
+    
+
+        
+        
+      if (bright<=thrash ){
+
+      
+        let dense = floor(l.length/20);
+
+        for (let g = 1; g < dense*2; g++ ) {
+        
+        text(p, x + random(0,30), y + random(0,30));
+        }
+
+        // 
+
+        // if (thrash>=80) {
+
+    
+        // for (let g = 1; g < dense*2; g++ ) {
+        
+        // text(p, x + random(0,30), y + random(0,30));
+        // }}
+      
+        // if (thrash>=50) {
+
+    
+        // for (let g = 1; g < dense; g++ ) {
+        
+        // text(p, x + random(0,20), y + random(0,20));
+        // }}
+        // if (thrash>=10) {
+
+    
+        // for (let g = 1; g < dense; g++ ) {
+        
+        // text(p, x + random(0,20), y + random(0,20));
+        // }}
+        
+       
+
+    }
+
+    
+
+    }
+    
+
+      // image(capture, 0,0); 
+      // text(s,100,100);
+      
+    }
+    
+    
+    // thrash-=5;
+      countess++;
+
+      if (countess>=20){
+      down +=60;
+      }
+      if (thrash>=60){
+        thrash-=8;
+      }
+
+        if (thrash>=10) {
+          thrash-=5;
+        }
+
+         if (thrash<=10) {
+          thrash-=2;
+        }
+
+       
+
+          loop();
+          console.log(thrash);
+
+  }
+function draw(){
+ // background(255, 255, 255, 1); 
+
+  generate();
+}
+    
+  </script>
+</body>
+</html>
